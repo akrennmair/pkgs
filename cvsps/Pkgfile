@@ -1,0 +1,15 @@
+# Description: cvsps
+# URL: http://www.cobite.com/cvsps/
+# Maintainer: ak
+
+name=cvsps
+version=2.2b1
+release=1
+source=(http://www.cobite.com/cvsps/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	patch -p1 < $PKGMK_PACKAGE_DIR/patches/00_fixes.patch
+	make prefix=/usr/pkg
+	make DESTDIR=$PKG prefix=/usr/pkg install
+}
