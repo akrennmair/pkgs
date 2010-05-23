@@ -1,0 +1,16 @@
+# Description: sloccount
+# URL: http://www.dwheeler.com/sloccount/
+# Maintainer: ak
+
+name=sloccount
+version=2.26
+release=1
+source=(http://www.dwheeler.com/sloccount/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	make PREFIX=/usr/pkg
+	mkdir -p $PKG/usr/pkg/man/man1
+	mkdir -p $PKG/usr/pkg/bin
+	make PREFIX=$PKG/usr/pkg MAN_DIR=$PKG/usr/pkg/man install
+}
