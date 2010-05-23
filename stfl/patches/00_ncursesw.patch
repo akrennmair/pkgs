@@ -1,0 +1,35 @@
+diff -urN stfl-0.21.orig/Makefile stfl-0.21/Makefile
+--- stfl-0.21.orig/Makefile	2009-06-19 19:30:52.000000000 +0200
++++ stfl-0.21/Makefile	2010-05-23 16:47:37.000000000 +0200
+@@ -21,8 +21,8 @@
+ include Makefile.cfg
+ 
+ export CC = gcc -pthread
+-export CFLAGS += -I. -Wall -Os -ggdb -D_GNU_SOURCE -fPIC
+-export LDLIBS += -lncursesw
++export CFLAGS += -I. -Wall -Os -ggdb -D_GNU_SOURCE -fPIC -I/sw/include
++export LDLIBS += -L/sw/lib -lncursesw -liconv
+ 
+ SONAME  := libstfl.so.0
+ VERSION := 0.21
+@@ -39,7 +39,7 @@
+ 
+ libstfl.so.$(VERSION): public.o base.o parser.o dump.o style.o binding.o iconv.o \
+                        $(patsubst %.c,%.o,$(wildcard widgets/*.c))
+-	$(CC) -shared -Wl,-soname,$(SONAME) -o $@ $^
++	$(CC) -shared -o $@ $^ $(LDLIBS)
+ 
+ clean:
+ 	rm -f libstfl.a example core core.* *.o Makefile.deps
+diff -urN stfl-0.21.orig/Makefile.cfg stfl-0.21/Makefile.cfg
+--- stfl-0.21.orig/Makefile.cfg	2009-05-31 20:20:39.000000000 +0200
++++ stfl-0.21/Makefile.cfg	2010-05-23 16:50:32.000000000 +0200
+@@ -52,3 +52,8 @@
+ FOUND_RUBY = 0
+ endif
+ 
++FOUND_SPL=0
++FOUND_SWIG=0
++FOUND_PERL5=0
++FOUND_PYTHON=0
++FOUND_RUBY=0
