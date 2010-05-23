@@ -1,0 +1,189 @@
+diff -urN pkgutils-5.20.orig/Makefile pkgutils-5.20/Makefile
+--- pkgutils-5.20.orig/Makefile	2005-04-27 01:01:13.000000000 +0200
++++ pkgutils-5.20/Makefile	2010-05-23 14:10:49.000000000 +0200
+@@ -19,9 +19,11 @@
+ #  USA.
+ #
+ 
++prefix = /usr
++
+ DESTDIR =
+-BINDIR = /usr/bin
+-MANDIR = /usr/man
++BINDIR = $(prefix)/bin
++MANDIR = $(prefix)/man
+ ETCDIR = /etc
+ 
+ VERSION = 5.20
+@@ -29,9 +31,10 @@
+ 
+ CXXFLAGS += -DNDEBUG
+ CXXFLAGS += -O2 -Wall -pedantic -D_GNU_SOURCE -DVERSION=\"$(VERSION)\" \
+-	    -Ilibtar-$(LIBTAR_VERSION)/lib -Ilibtar-$(LIBTAR_VERSION)/listhash
++	    -Ilibtar-$(LIBTAR_VERSION)/lib -Ilibtar-$(LIBTAR_VERSION)/listhash \
++		-DETCDIR=\"$(ETCDIR)\"
+ 
+-LDFLAGS += -static -Llibtar-$(LIBTAR_VERSION)/lib -ltar -lz
++LDFLAGS += -Llibtar-$(LIBTAR_VERSION)/lib -ltar -lz
+ 
+ OBJECTS = main.o pkgutil.o pkgadd.o pkgrm.o pkginfo.o
+ 
+@@ -65,7 +68,7 @@
+ 	nroff -mandoc -c $< | col -bx > $@
+ 
+ %: %.in
+-	sed -e "s/#VERSION#/$(VERSION)/" $< > $@
++	sed -e "s/#VERSION#/$(VERSION)/" $< | sed -e "s,#ETCDIR#,${ETCDIR}," > $@
+ 
+ .depend:
+ 	$(CXX) $(CXXFLAGS) -MM $(OBJECTS:.o=.cc) > .depend
+@@ -80,17 +83,21 @@
+ 	(cd .. && tar czvf pkgutils-$(VERSION).tar.gz pkgutils-$(VERSION))
+ 
+ install: all
+-	install -D -m0755 pkgadd $(DESTDIR)$(BINDIR)/pkgadd
+-	install -D -m0644 pkgadd.conf $(DESTDIR)$(ETCDIR)/pkgadd.conf
+-	install -D -m0755 pkgmk $(DESTDIR)$(BINDIR)/pkgmk
+-	install -D -m0755 rejmerge $(DESTDIR)$(BINDIR)/rejmerge
+-	install -D -m0644 pkgmk.conf $(DESTDIR)$(ETCDIR)/pkgmk.conf
+-	install -D -m0644 rejmerge.conf $(DESTDIR)$(ETCDIR)/rejmerge.conf
+-	install -D -m0644 pkgadd.8 $(DESTDIR)$(MANDIR)/man8/pkgadd.8
+-	install -D -m0644 pkgrm.8 $(DESTDIR)$(MANDIR)/man8/pkgrm.8
+-	install -D -m0644 pkginfo.8 $(DESTDIR)$(MANDIR)/man8/pkginfo.8
+-	install -D -m0644 pkgmk.8 $(DESTDIR)$(MANDIR)/man8/pkgmk.8
+-	install -D -m0644 rejmerge.8 $(DESTDIR)$(MANDIR)/man8/rejmerge.8
++	mkdir -p $(DESTDIR)$(BINDIR)
++	mkdir -p $(DESTDIR)$(ETCDIR)
++	mkdir -p $(DESTDIR)$(MANDIR)
++	mkdir -p $(DESTDIR)$(MANDIR)/man8
++	install -m0755 pkgadd $(DESTDIR)$(BINDIR)/pkgadd
++	install -m0644 pkgadd.conf $(DESTDIR)$(ETCDIR)/pkgadd.conf
++	install -m0755 pkgmk $(DESTDIR)$(BINDIR)/pkgmk
++	install -m0755 rejmerge $(DESTDIR)$(BINDIR)/rejmerge
++	install -m0644 pkgmk.conf $(DESTDIR)$(ETCDIR)/pkgmk.conf
++	install -m0644 rejmerge.conf $(DESTDIR)$(ETCDIR)/rejmerge.conf
++	install -m0644 pkgadd.8 $(DESTDIR)$(MANDIR)/man8/pkgadd.8
++	install -m0644 pkgrm.8 $(DESTDIR)$(MANDIR)/man8/pkgrm.8
++	install -m0644 pkginfo.8 $(DESTDIR)$(MANDIR)/man8/pkginfo.8
++	install -m0644 pkgmk.8 $(DESTDIR)$(MANDIR)/man8/pkgmk.8
++	install -m0644 rejmerge.8 $(DESTDIR)$(MANDIR)/man8/rejmerge.8
+ 	ln -sf pkgadd $(DESTDIR)$(BINDIR)/pkgrm
+ 	ln -sf pkgadd $(DESTDIR)$(BINDIR)/pkginfo
+ 
+diff -urN pkgutils-5.20.orig/pkgadd.8.in pkgutils-5.20/pkgadd.8.in
+--- pkgutils-5.20.orig/pkgadd.8.in	2005-03-28 20:51:53.000000000 +0200
++++ pkgutils-5.20/pkgadd.8.in	2010-05-23 14:15:00.000000000 +0200
+@@ -33,7 +33,7 @@
+ Print help and exit.
+ .SH CONFIGURATION
+ When using \fBpkgadd\fP in upgrade mode (i.e. option -u is used) the
+-file \fI/etc/pkgadd.conf\fP will be read. This file can contain rules describing
++file \fI#ETCDIR#/pkgadd.conf\fP will be read. This file can contain rules describing
+ how pkgadd should behave when doing upgrades. A rule is built out of three
+ fragments, \fIevent\fP, \fIpattern\fP and \fIaction\fP. The event describes
+ in what kind of situation this rule applies. Currently only one type of event is
+@@ -59,7 +59,7 @@
+ The user is then free to examine/use/remove that file manually.
+ .SH FILES
+ .TP
+-.B "/etc/pkgadd.conf"
++.B "#ETCDIR#/pkgadd.conf"
+ Configuration file.
+ .SH SEE ALSO
+ pkgrm(8), pkginfo(8), pkgmk(8), rejmerge(8)
+diff -urN pkgutils-5.20.orig/pkgadd.h pkgutils-5.20/pkgadd.h
+--- pkgutils-5.20.orig/pkgadd.h	2005-03-28 20:51:53.000000000 +0200
++++ pkgutils-5.20/pkgadd.h	2010-05-23 14:07:44.000000000 +0200
+@@ -26,7 +26,7 @@
+ #include <vector>
+ #include <set>
+ 
+-#define PKGADD_CONF             "/etc/pkgadd.conf"
++#define PKGADD_CONF             ETCDIR "/pkgadd.conf"
+ #define PKGADD_CONF_MAXLINE     1024
+ 
+ struct rule_t {
+diff -urN pkgutils-5.20.orig/pkgmk.8.in pkgutils-5.20/pkgmk.8.in
+--- pkgutils-5.20.orig/pkgmk.8.in	2005-03-28 20:51:53.000000000 +0200
++++ pkgutils-5.20/pkgmk.8.in	2010-05-23 14:15:24.000000000 +0200
+@@ -15,7 +15,7 @@
+ program uses the \fIPkgfile\fP file and the last-modification
+ times of the source files to decide if the package needs to be updated.
+ 
+-Global build configuration is stored in \fI/etc/pkgmk.conf\fP. This
++Global build configuration is stored in \fI#ETCDIR#/pkgmk.conf\fP. This
+ file is read by pkgmk at startup.
+ .SH OPTIONS
+ .TP
+@@ -62,7 +62,7 @@
+ Keep temporary working directory.
+ .TP
+ .B "\-cf, \-\-config\-file <file>"
+-Use alternative configuration file (default is /etc/pkgmk.conf).
++Use alternative configuration file (default is #ETCDIR#/pkgmk.conf).
+ .TP
+ .B "\-v, \-\-version"
+ Print version and exit.
+@@ -80,7 +80,7 @@
+ .B ".md5sum"
+ MD5 checksum of source files.
+ .TP
+-.B "/etc/pkgmk.conf"
++.B "#ETCDIR#/pkgmk.conf"
+ Global package make configuration.
+ .TP
+ .B "wget"
+diff -urN pkgutils-5.20.orig/pkgmk.in pkgutils-5.20/pkgmk.in
+--- pkgutils-5.20.orig/pkgmk.in	2005-03-29 00:13:22.000000000 +0200
++++ pkgutils-5.20/pkgmk.in	2010-05-23 14:06:40.000000000 +0200
+@@ -623,7 +623,7 @@
+ readonly PKGMK_COMMAND="$0"
+ readonly PKGMK_ROOT="$PWD"
+ 
+-PKGMK_CONFFILE="/etc/pkgmk.conf"
++PKGMK_CONFFILE="#ETCDIR#/pkgmk.conf"
+ PKGMK_PKGFILE="Pkgfile"
+ PKGMK_FOOTPRINT=".footprint"
+ PKGMK_MD5SUM=".md5sum"
+diff -urN pkgutils-5.20.orig/rejmerge.8.in pkgutils-5.20/rejmerge.8.in
+--- pkgutils-5.20.orig/rejmerge.8.in	2005-04-27 00:59:06.000000000 +0200
++++ pkgutils-5.20/rejmerge.8.in	2010-05-23 14:15:49.000000000 +0200
+@@ -22,7 +22,7 @@
+ .B "\-h, \-\-help"
+ Print help and exit.
+ .SH CONFIGURATION
+-When \fBrejmerge\fP is started it will source \fI/etc/rejmerge.conf\fP.
++When \fBrejmerge\fP is started it will source \fI#ETCDIR#/rejmerge.conf\fP.
+ This file can be used to alter the way \fBrejmerge\fP displays file differences and performs file
+ merges. Changing the default behaviour is done by re-defining the shell functions \fBrejmerge_diff()\fP
+ and/or \fBrejmerge_merge()\fP.
+@@ -47,7 +47,7 @@
+ 
+ .nf
+ #
+-# /etc/rejmerge.conf: rejmerge(8) configuration
++# #ETCDIR#/rejmerge.conf: rejmerge(8) configuration
+ #
+ 
+ rejmerge_diff() {
+@@ -65,7 +65,7 @@
+ 
+ .SH FILES
+ .TP
+-.B "/etc/rejmerge.conf"
++.B "#ETCDIR#/rejmerge.conf"
+ Configuration file.
+ .TP
+ .B "/var/lib/pkg/rejected/"
+diff -urN pkgutils-5.20.orig/rejmerge.in pkgutils-5.20/rejmerge.in
+--- pkgutils-5.20.orig/rejmerge.in	2005-05-04 02:10:25.000000000 +0200
++++ pkgutils-5.20/rejmerge.in	2010-05-23 14:07:15.000000000 +0200
+@@ -305,7 +305,7 @@
+ readonly REJMERGE_VERSION="#VERSION#"
+ readonly REJMERGE_COMMAND="${0##*/}"
+ REJMERGE_ROOT=""
+-REJMERGE_CONF="/etc/rejmerge.conf"
++REJMERGE_CONF="#ETCDIR#/rejmerge.conf"
+ REJECTED_DIR="/var/lib/pkg/rejected"
+ EDITOR=${EDITOR:-vi}
+ TMPFILE=$(mktemp) || exit 1

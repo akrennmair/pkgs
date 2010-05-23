@@ -1,0 +1,15 @@
+# Description: git - fast verion control system
+# URL: http://git-scm.com/
+# Maintainer: ak
+
+name=git
+version=1.7.1
+release=1
+source=(http://kernel.org/pub/software/scm/git/$name-$version.tar.bz2)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr/pkg
+	make
+	make DESTDIR=$PKG install
+}

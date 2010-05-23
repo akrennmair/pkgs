@@ -1,0 +1,17 @@
+# Description: pkgutils
+# URL: http://www.fukt.bsnet.se/~per/pkgutils/
+# Maintainer: ak
+
+name=pkgutils
+version=5.20
+release=1
+source=(http://www.fukt.bsnet.se/~per/pkgutils/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	patch -p1 < $PKGMK_PACKAGE_DIR/patches/00_fixes.patch
+	make prefix=/usr/pkg ETCDIR=/usr/pkg/etc
+	make DESTDIR=$PKG prefix=/usr/pkg ETCDIR=/usr/pkg/etc install
+	mkdir -p $PKG/var/lib/pkg
+	touch $PKG/var/lib/pkg/db
+}
