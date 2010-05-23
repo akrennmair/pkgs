@@ -9,7 +9,7 @@ source=(http://dev.yorhel.nl/download/$name-$version.tar.gz)
 
 build() {
 	cd $name-$version
-	./configure --prefix=/usr/pkg
+	./configure --prefix=/usr/pkg --mandir=/usr/pkg/man
 	make
 	make DESTDIR=$PKG install
 }
