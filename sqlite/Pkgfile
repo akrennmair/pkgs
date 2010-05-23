@@ -1,0 +1,15 @@
+# Description: sqlite
+# URL: http://sqlite.org/
+# Maintainer: ak
+
+name=sqlite
+version=3.6.23.1
+release=1
+source=(http://sqlite.org/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr/pkg --mandir=/usr/pkg/man --disable-tcl
+	make
+	make DESTDIR=$PKG install
+}
