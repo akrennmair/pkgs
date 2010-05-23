@@ -1,0 +1,15 @@
+# Description: nmap
+# URL: http://nmap.org/
+# Maintainer: ak
+
+name=nmap
+version=5.21
+release=1
+source=(http://nmap.org/dist/$name-$version.tar.bz2)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr/pkg --mandir=/usr/pkg/man
+	make
+	make DESTDIR=$PKG install
+}
