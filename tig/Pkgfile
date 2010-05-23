@@ -1,0 +1,15 @@
+# Description: tig
+# URL: http://jonas.nitro.dk/tig/
+# Maintainer: ak
+
+name=tig
+version=0.15
+release=1
+source=(http://jonas.nitro.dk/tig/releases/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr/pkg
+	make
+	make DESTDIR=$PKG install
+}
