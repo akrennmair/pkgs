@@ -1,0 +1,14 @@
+# Description: mercurial
+# URL: http://mercurial.selenic.com/
+# Maintainer: ak
+
+name=mercurial
+version=1.5.3
+release=1
+source=(http://mercurial.selenic.com/release/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	make PREFIX=/usr/pkg all
+	make PREFIX=$PKG/usr/pkg MANDIR=$PKG/usr/pkg/man install
+}
