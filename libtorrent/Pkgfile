@@ -1,0 +1,15 @@
+# Description: libtorrent
+# URL: http://libtorrent.rakshasa.no/
+# Maintainer: ak
+
+name=libtorrent
+version=0.12.6
+release=1
+source=(http://libtorrent.rakshasa.no/downloads/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr/pkg --mandir=/usr/pkg/man --with-kqueue
+	make
+	make DESTDIR=$PKG install
+}

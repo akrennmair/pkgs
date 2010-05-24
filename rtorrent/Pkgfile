@@ -1,0 +1,15 @@
+# Description: rtorrent
+# URL: http://libtorrent.rakshasa.no/
+# Maintainer: ak
+
+name=rtorrent
+version=0.8.6
+release=1
+source=(http://libtorrent.rakshasa.no/downloads/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr/pkg --mandir=/usr/pkg/man
+	make
+	make DESTDIR=$PKG install
+}
