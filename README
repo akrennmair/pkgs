@@ -1,17 +1,29 @@
-I primarily use Fink <http://www.finkproject.org/> to install and update
-commandline and text terminal software on Mac OS X. However, there are
-some packages that aren't in the repository. Since I always found Fink
-to be too unpleasant to develop for, I use a patched version of pkgutils
-(as used by CRUX, the Linux distribution) to manage these additional
-packages.
+Introduction
+------------
+
+I primarily use Fink to install and update commandline and text terminal
+software on Mac OS X. However, there are some packages that aren't in the
+repository. Since I always found Fink to be too unpleasant to develop for, I
+use a patched version of pkgutils (as used by CRUX, the Linux distribution) to
+manage these additional packages.
 
 In this repository, you can find both the patch to pkgutils and the package
-information to build some packages by yourself. To bootstrap the whole
-thing, just execute manually what is done in the pkgutils Pkgfile.
+information to build some packages by yourself. To bootstrap the whole thing,
+just execute manually what is done in the pkgutils Pkgfile.
 
-After doing this, you may also want to add this to your ~/.bash_profile
-or ~/.zshrc:
+After doing this, you may also want to add this to your ~/.bash_profile or
+~/.zshrc:
 
 	export MANPATH=$MANPATH:/usr/pkg/man
 	export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/pkg/lib/pkgconfig
 	export PATH=$PATH:/usr/pkg/bin
+
+Please be aware that it is assumed that you already have a working Fink
+installation.
+
+
+Links
+-----
+
+ * pkgutils: http://www.fukt.bsnet.se/~per/pkgutils/
+ * Fink: http://www.finkproject.org/
