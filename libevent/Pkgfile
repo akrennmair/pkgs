@@ -1,0 +1,15 @@
+# Description: libevent
+# URL: http://monkey.org/~provos/libevent/
+# Maintainer: ak
+
+name=libevent
+version=1.4.13
+release=1
+source=(http://monkey.org/~provos/$name-$version-stable.tar.gz)
+
+build() {
+	cd $name-$version-stable
+	./configure --prefix=/usr/pkg --mandir=/usr/pkg/man
+	make
+	make DESTDIR=$PKG install
+}

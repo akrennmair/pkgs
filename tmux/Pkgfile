@@ -1,0 +1,17 @@
+# Description: tmux
+# URL: http://tmux.sourceforge.net/
+# Maintainer: ak
+# Depends on: libevent
+
+name=tmux
+version=1.2
+release=1
+source=(http://ignum.dl.sourceforge.net/project/tmux/tmux/$name-$version/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	patch -p1 < $PKGMK_PACKAGE_DIR/patches/00_fixes.patch
+	./configure
+	make CFLAGS+="-DBUILD="\"\\\"\$\(VERSION\)\\\"\"" -I/usr/pkg/include" LDFLAGS+="-L/usr/pkg/lib" PREFIX=/usr/pkg
+	make DESTDIR=$PKG PREFIX=/usr/pkg install
+}

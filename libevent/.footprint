@@ -1,0 +1,31 @@
+drwxr-xr-x	ak/admin	usr/
+drwxr-xr-x	ak/admin	usr/pkg/
+drwxr-xr-x	ak/admin	usr/pkg/bin/
+-rwxr-xr-x	ak/admin	usr/pkg/bin/event_rpcgen.py
+drwxr-xr-x	ak/admin	usr/pkg/include/
+-rw-r--r--	ak/admin	usr/pkg/include/evdns.h
+-rw-r--r--	ak/admin	usr/pkg/include/event-config.h
+-rw-r--r--	ak/admin	usr/pkg/include/event.h
+-rw-r--r--	ak/admin	usr/pkg/include/evhttp.h
+-rw-r--r--	ak/admin	usr/pkg/include/evrpc.h
+-rw-r--r--	ak/admin	usr/pkg/include/evutil.h
+drwxr-xr-x	ak/admin	usr/pkg/lib/
+-rwxr-xr-x	ak/admin	usr/pkg/lib/libevent-1.4.2.1.3.dylib
+lrwxrwxrwx	ak/admin	usr/pkg/lib/libevent-1.4.2.dylib -> libevent-1.4.2.1.3.dylib
+-rw-r--r--	ak/admin	usr/pkg/lib/libevent.a
+lrwxrwxrwx	ak/admin	usr/pkg/lib/libevent.dylib -> libevent-1.4.2.1.3.dylib
+-rwxr-xr-x	ak/admin	usr/pkg/lib/libevent.la
+-rwxr-xr-x	ak/admin	usr/pkg/lib/libevent_core-1.4.2.1.3.dylib
+lrwxrwxrwx	ak/admin	usr/pkg/lib/libevent_core-1.4.2.dylib -> libevent_core-1.4.2.1.3.dylib
+-rw-r--r--	ak/admin	usr/pkg/lib/libevent_core.a
+lrwxrwxrwx	ak/admin	usr/pkg/lib/libevent_core.dylib -> libevent_core-1.4.2.1.3.dylib
+-rwxr-xr-x	ak/admin	usr/pkg/lib/libevent_core.la
+-rwxr-xr-x	ak/admin	usr/pkg/lib/libevent_extra-1.4.2.1.3.dylib
+lrwxrwxrwx	ak/admin	usr/pkg/lib/libevent_extra-1.4.2.dylib -> libevent_extra-1.4.2.1.3.dylib
+-rw-r--r--	ak/admin	usr/pkg/lib/libevent_extra.a
+lrwxrwxrwx	ak/admin	usr/pkg/lib/libevent_extra.dylib -> libevent_extra-1.4.2.1.3.dylib
+-rwxr-xr-x	ak/admin	usr/pkg/lib/libevent_extra.la
+drwxr-xr-x	ak/admin	usr/pkg/man/
+drwxr-xr-x	ak/admin	usr/pkg/man/man3/
+-rw-r--r--	ak/admin	usr/pkg/man/man3/evdns.3.gz
+-rw-r--r--	ak/admin	usr/pkg/man/man3/event.3.gz

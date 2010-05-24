@@ -1,0 +1,14 @@
+diff -urN tmux-1.2.orig/GNUmakefile tmux-1.2/GNUmakefile
+--- tmux-1.2.orig/GNUmakefile	2010-03-10 16:15:33.000000000 +0100
++++ tmux-1.2/GNUmakefile	2010-05-23 21:08:56.000000000 +0200
+@@ -53,8 +53,8 @@
+ 
+ PREFIX?= /usr/local
+ INSTALLDIR= install -d
+-INSTALLBIN= install -g bin -o root -m 555
+-INSTALLMAN= install -g bin -o root -m 444
++INSTALLBIN= install -m 555
++INSTALLMAN= install -m 444
+ 
+ SRCS= $(shell echo *.c|sed 's|osdep-[a-z0-9]*.c||g')
+ include config.mk
