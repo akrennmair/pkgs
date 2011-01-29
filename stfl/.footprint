@@ -1,10 +1,22 @@
+drwxr-xr-x	ak/admin	Network/
+drwxr-xr-x	ak/admin	Network/Library/
+drwxr-xr-x	ak/admin	Network/Library/Perl/
+drwxr-xr-x	ak/admin	Network/Library/Perl/5.10.0/
+drwxr-xr-x	ak/admin	Network/Library/Perl/5.10.0/darwin-thread-multi-2level/
+drwxr-xr-x	ak/admin	Network/Library/Perl/5.10.0/darwin-thread-multi-2level/auto/
+drwxr-xr-x	ak/admin	Network/Library/Perl/5.10.0/darwin-thread-multi-2level/auto/stfl/
+-rw-r--r--	ak/admin	Network/Library/Perl/5.10.0/darwin-thread-multi-2level/auto/stfl/.packlist
+-r--r--r--	ak/admin	Network/Library/Perl/5.10.0/darwin-thread-multi-2level/auto/stfl/stfl.bs (EMPTY)
+-r-xr-xr-x	ak/admin	Network/Library/Perl/5.10.0/darwin-thread-multi-2level/auto/stfl/stfl.bundle
+-r--r--r--	ak/admin	Network/Library/Perl/5.10.0/darwin-thread-multi-2level/example.pl
+-r--r--r--	ak/admin	Network/Library/Perl/5.10.0/darwin-thread-multi-2level/stfl.pm
 drwxr-xr-x	ak/admin	usr/
 drwxr-xr-x	ak/admin	usr/pkg/
 drwxr-xr-x	ak/admin	usr/pkg/include/
 -rw-r--r--	ak/admin	usr/pkg/include/stfl.h
 drwxr-xr-x	ak/admin	usr/pkg/lib/
+-rw-r--r--	ak/admin	usr/pkg/lib/libstfl.0.21.dylib
 -rw-r--r--	ak/admin	usr/pkg/lib/libstfl.a
-lrwxrwxrwx	ak/admin	usr/pkg/lib/libstfl.so -> libstfl.so.0.21
--rw-r--r--	ak/admin	usr/pkg/lib/libstfl.so.0.21
+lrwxrwxrwx	ak/admin	usr/pkg/lib/libstfl.dylib -> libstfl.0.21.dylib
 drwxr-xr-x	ak/admin	usr/pkg/lib/pkgconfig/
 -rw-r--r--	ak/admin	usr/pkg/lib/pkgconfig/stfl.pc

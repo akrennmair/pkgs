@@ -1,35 +1,68 @@
 diff -urN stfl-0.21.orig/Makefile stfl-0.21/Makefile
 --- stfl-0.21.orig/Makefile	2009-06-19 19:30:52.000000000 +0200
-+++ stfl-0.21/Makefile	2010-05-23 16:47:37.000000000 +0200
-@@ -21,8 +21,8 @@
++++ stfl-0.21/Makefile	2011-01-27 22:55:23.000000000 +0100
+@@ -21,15 +21,16 @@
  include Makefile.cfg
  
  export CC = gcc -pthread
 -export CFLAGS += -I. -Wall -Os -ggdb -D_GNU_SOURCE -fPIC
 -export LDLIBS += -lncursesw
-+export CFLAGS += -I. -Wall -Os -ggdb -D_GNU_SOURCE -fPIC -I/sw/include
++export CFLAGS += -m32 -I. -Wall -Os -ggdb -D_GNU_SOURCE -fPIC -I/sw/include
 +export LDLIBS += -L/sw/lib -lncursesw -liconv
  
- SONAME  := libstfl.so.0
+-SONAME  := libstfl.so.0
  VERSION := 0.21
-@@ -39,7 +39,7 @@
++SONAME  := libstfl.$(VERSION).dylib
  
- libstfl.so.$(VERSION): public.o base.o parser.o dump.o style.o binding.o iconv.o \
+-all: libstfl.so.$(VERSION) libstfl.a example
++all: $(SONAME) libstfl.a example
+ 
+ example: libstfl.a example.o
++	$(CC) $(CFLAGS) $(LDLIBS) -o $@ $^
+ 
+ libstfl.a: public.o base.o parser.o dump.o style.o binding.o iconv.o \
+            $(patsubst %.c,%.o,$(wildcard widgets/*.c))
+@@ -37,9 +38,9 @@
+ 	ar qc $@ $^
+ 	ranlib $@
+ 
+-libstfl.so.$(VERSION): public.o base.o parser.o dump.o style.o binding.o iconv.o \
++$(SONAME): public.o base.o parser.o dump.o style.o binding.o iconv.o \
                         $(patsubst %.c,%.o,$(wildcard widgets/*.c))
 -	$(CC) -shared -Wl,-soname,$(SONAME) -o $@ $^
-+	$(CC) -shared -o $@ $^ $(LDLIBS)
++	$(CC) $(CFLAGS) -shared -o $@ $^ $(LDLIBS)
  
  clean:
  	rm -f libstfl.a example core core.* *.o Makefile.deps
+@@ -50,7 +51,7 @@
+ 	rm -f python/stfl_wrap.c python/stfl_wrap.o
+ 	rm -f ruby/Makefile ruby/stfl_wrap.c ruby/stfl_wrap.o
+ 	rm -f ruby/stfl.so ruby/build_ok Makefile.deps_new
+-	rm -f stfl.pc libstfl.so libstfl.so.*
++	rm -f stfl.pc libstfl.so $(SONAME)
+ 
+ Makefile.deps: *.c widgets/*.c *.h
+ 	$(CC) -I. -MM *.c > Makefile.deps_new
+@@ -63,8 +64,8 @@
+ 	install -m 644 libstfl.a $(DESTDIR)$(prefix)/$(libdir)
+ 	install -m 644 stfl.h $(DESTDIR)$(prefix)/include/
+ 	install -m 644 stfl.pc $(DESTDIR)$(prefix)/$(libdir)/pkgconfig/
+-	install -m 644 libstfl.so.$(VERSION) $(DESTDIR)$(prefix)/$(libdir)
+-	ln -fs libstfl.so.$(VERSION) $(DESTDIR)$(prefix)/$(libdir)/libstfl.so
++	install -m 644 $(SONAME) $(DESTDIR)$(prefix)/$(libdir)
++	ln -fs $(SONAME) $(DESTDIR)$(prefix)/$(libdir)/libstfl.dylib
+ 
+ stfl.pc: stfl.pc.in
+ 	sed 's,@VERSION@,$(VERSION),g' < $< | sed 's,@PREFIX@,$(prefix),g' > $@
 diff -urN stfl-0.21.orig/Makefile.cfg stfl-0.21/Makefile.cfg
 --- stfl-0.21.orig/Makefile.cfg	2009-05-31 20:20:39.000000000 +0200
-+++ stfl-0.21/Makefile.cfg	2010-05-23 16:50:32.000000000 +0200
++++ stfl-0.21/Makefile.cfg	2011-01-27 22:54:16.000000000 +0100
 @@ -52,3 +52,8 @@
  FOUND_RUBY = 0
  endif
  
 +FOUND_SPL=0
-+FOUND_SWIG=0
-+FOUND_PERL5=0
++FOUND_SWIG=1
++#FOUND_PERL5=1
 +FOUND_PYTHON=0
 +FOUND_RUBY=0

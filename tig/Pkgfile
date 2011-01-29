@@ -3,13 +3,13 @@
 # Maintainer: ak
 
 name=tig
-version=0.15
+version=0.16.2
 release=1
 source=(http://jonas.nitro.dk/tig/releases/$name-$version.tar.gz)
 
 build() {
 	cd $name-$version
-	./configure --prefix=/usr/pkg
+	CFLAGS="-m32 -I/sw/include" LDFLAGS="-m32 -L/sw/lib" ./configure --prefix=/usr/pkg
 	make
 	make DESTDIR=$PKG install
 }

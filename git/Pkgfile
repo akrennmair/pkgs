@@ -9,7 +9,7 @@ source=(http://kernel.org/pub/software/scm/git/$name-$version.tar.bz2)
 
 build() {
 	cd $name-$version
-	./configure --prefix=/usr/pkg
+	CFLAGS=-m32 ./configure --prefix=/usr/pkg
 	make
 	make DESTDIR=$PKG install
 }

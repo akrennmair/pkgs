@@ -12,4 +12,5 @@ build() {
 	patch -p1 < $PKGMK_PACKAGE_DIR/patches/00_ncursesw.patch
 	make prefix=/usr/pkg
 	make DESTDIR=$PKG prefix=/usr/pkg install
+	rm -rf $PKG/Library
 }
