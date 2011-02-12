@@ -1,0 +1,15 @@
+# Description: libevent
+# URL: http://monkey.org/~provos/libevent/
+# Maintainer: ak
+
+name=json-c
+version=0.9
+release=1
+source=(http://oss.metaparadigm.com/json-c/json-c-0.9.tar.gz)
+
+build() {
+	cd $name-$version
+	CFLAGS=-m32 ./configure --prefix=/usr/pkg --mandir=/usr/pkg/man
+	make
+	make DESTDIR=$PKG install
+}
